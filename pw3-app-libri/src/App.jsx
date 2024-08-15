@@ -1,5 +1,6 @@
 import "./App.css";
 import CardBooks from "./components/CardBooks";
+import capaLivro from './assets/livros/livros/irmaos_karamazov.jpg'
 
 function App() {
   return (
@@ -7,17 +8,10 @@ function App() {
       <CardBooks
         titulo="Os irmãos Karamázov"
         autor="Fiódor Dostoiévski e Paulo Bezerra"
+        imagem={capaLivro}
       />
 
-      <CardBooks
-        titulo="Crime e castigo"
-        autor="Fiódor Dostoiévski e Paulo Bezerra"
-      />
-
-      <CardBooks
-        titulo="Noites brancas"
-        autor="Nivaldo dos Santos e Fiódor Dostoiévski"
-      />
+      
     </>
   );
 }
