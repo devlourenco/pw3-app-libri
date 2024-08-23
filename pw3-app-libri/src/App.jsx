@@ -1,17 +1,12 @@
 import "./App.css";
 import CardBooks from "./components/CardBooks";
-import capaLivro from './assets/livros/livros/irmaos_karamazov.jpg'
+import capaLivro from "./assets/livros/livros/irmaos_karamazov.jpg";
+import NavBar from "./components/layout/NavBar";
 
 function App() {
   return (
     <>
-      <CardBooks
-        titulo="Os irmãos Karamázov"
-        autor="Fiódor Dostoiévski e Paulo Bezerra"
-        imagem={capaLivro}
-      />
-
-      
+      <NavBar />
     </>
   );
 }
