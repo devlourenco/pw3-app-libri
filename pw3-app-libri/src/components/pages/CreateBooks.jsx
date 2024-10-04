@@ -4,74 +4,84 @@ import style from "./CreateBooks.module.css";
 import Input from "../forms/Input";
 import Select from "../forms/Select";
 import Button from "../forms/Button";
+
 const CreateBooks = () => {
-  /*Define o state de dados da categoria*/
-  const [categorias, setCategorias] = useState([]);
+  /* DEFINE OS STATES DADOS DAS CATEGORIAS*/
+
+  const [categorias, SetCategorias] = useState([]);
+
+  /* STATE DE DADOS QUE VAI ARMAZENAR O OBJETO JSON DE LIVRO */
   const [book, setBook] = useState({});
 
+  /* HANDLER DE CAPTURA DOS DADOS DE INPUT (NOME DO LIVRO, AUTOR E DESCRIÇÃO) */
   function handlerChangeBook(event) {
-    setBook({ ...book, [event.target.name]: event.target.value });
+    setBook({...book, [event.target.name]: event.target.value});
     console.log(book);
+  }
 
-    function submit(event) {
-      event.preventDefault();
-      createBook(book);
-    }
-
-    function createBook(book) {
-      // console.log(JSON.stringify(book))
-
-      fetch("http://localhost:5000/inserirLivro", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-        },
-        body: JSON.stringify(book),
+  // Recupera os dados de categorias da apirest
+  useEffect(() => {
+    fetch("http://localhost:5000/listagemCateorias", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow_Headers": "*",
+      },
+    })
+      .then((response) =>
+        // console.log('RESPOSTA' + response)
+        response.json()
+      )
+      .then((data) => {
+        console.log("DATA:" + data);
+        SetCategorias(data.data);
       })
-        .then((resp) => resp.json())
-        .then((data) => {
-          console.log(data);
-          // navigate('/livros',{state:'LIVRO CADASTRADO COM SUCESSO!'});
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-    useEffect(() => {
-      fetch("http://localhost:5000/listagemCateorias", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-        },
+  /* INSERÇÃO DOS DADOS DE LIVRO */
+  function createBook(book) {
+    console.log(JSON.stringify(book));
+
+    fetch("http://localhost:5000/inserirLivro", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+      },
+      body: JSON.stringify(book),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        // navigate('/livros',{state:'LIVRO CADASTRADO COM SUCESSO!'});
       })
-        .then((response) =>
-          // console.log("RESPOSTA:" + resp);
-          response.json()
-        )
-        .then((data) => {
-          console.log("DATA: " + data);
-          setCategorias(data.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }, []);
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-    return (
-      <section className={style.create_book_container}>
-        <h1>CADASTRAR LIVRO</h1>
+  /* FUNÇÃO DE SUBMIT */
+  function submit(event) {
+    event.preventDefault();
+    createBook(book);
+  }
+
+  return (
+    <section className={style.create_book_container}>
+      <h1>CADASTRAR LIVRO</h1>
+      <form onSubmit={submit}>
         <Input
           type="text"
           name="nome_livro"
           placeHolder="Digite o nome do seu livro"
           text="Título do Livro"
-          Onchange={handlerChangeBook}
+          handlerChangeBook={handlerChangeBook}
         />
 
         <Input
@@ -79,26 +89,26 @@ const CreateBooks = () => {
           name="autor_livro"
           placeHolder="Digite o nome do autor do livro"
           text="Nome do autor"
-          Onchange={handlerChangeBook}
-
-/>
+          handlerChangeBook={handlerChangeBook}
+        />
 
         <Input
           type="text"
           name="descricao_livro"
           placeHolder="Digite a descrição do livro"
           text="Descrição do livro"
-          Onchange={handlerChangeBook}
-/>
+          handlerChangeBook={handlerChangeBook}
+        />
 
         <Select
           name="categoria"
           text="Escolha uma categoria de livro"
           options={categorias}
         />
-        <Button rotulo="Cadastrar Livro" onClick={createBook} />
-      </section>
-    );
-  }
+        <Button rotulo="Cadastrar Livro" />
+      </form>
+    </section>
+  );
 };
+
 export default CreateBooks;

@@ -3,7 +3,7 @@ import styles from "./Button.module.css";
 const Button = ({ label }) => {
   return (
     <div className={styles.buttonContainer}>
-      <button>{label}</button>
+      <button type="submit">{label}</button>
     </div>
   );
 };
